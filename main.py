@@ -17,13 +17,12 @@ origins = [
     "https://staging.roi.realreturns.ai"
 ]
 
-trestle_base = "https://api-prod.corelogic.com"
 attomd_base = "https://api.gateway.attomdata.com/propertyapi/v1.0.0"
 
 middleware = [
     Middleware(
         CORSMiddleware,
-        allow_origins=['http://localhost:8000'],
+        allow_origins=origins,
         allow_credentials=True,
         allow_methods=['*'],
         allow_headers=['*']
@@ -40,28 +39,11 @@ except KeyError:
   sys.exit(1)
 
 try:  
-  TRESTLE_API_KEY = os.environ['TRESTLE_KEY']
-except KeyError: 
-  print('[error]: `TRESTLE_KEY` environment variable required')
-  sys.exit(1)
-
-try:  
-  TRESTLE_API_SEC = os.environ['TRESTLE_SEC']
-except KeyError: 
-  print('[error]: `TRESTLE_SEC` environment variable required')
-  sys.exit(1)
-
-try:  
   ATTOM_API_KEY = os.environ['ATTOM_KEY']
 except KeyError: 
   print('[error]: `ATTOM_KEY` environment variable required')
   sys.exit(1)
 
-c = BackendApplicationClient(client_id=TRESTLE_API_KEY)
-session = OAuth2Session(client=c)
-session.fetch_token(token_url=f"{trestle_base}/trestle/oidc/connect/token", 
-                    client_id=TRESTLE_API_KEY, client_secret=TRESTLE_API_SEC,
-                    scope='api')
 
 headers = {
     'Accept': 'application/json',
@@ -86,7 +68,7 @@ async def get_property_details(address: str, bedrooms: int = 2, building_type: s
     )
     if building_type == "apartment":
         params = (
-            ('address', address),
+            ('address', address), # Maybe specify apartment in the future
         )
     res = requests.get(f"{attomd_base}/property/expandedprofile",
             headers=headers,
