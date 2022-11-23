@@ -22,5 +22,5 @@ export ATTOM_KEY="sdfsdfsdfdsfsdfsdfsdfsdfsdf"
 ## Running the Server
 
 ```bash
-uvicorn main:app --reload --port 8067
+uvicorn app.main:app --reload --port 8067
 ```
