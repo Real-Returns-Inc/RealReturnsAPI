@@ -11,7 +11,9 @@ origins = [
     "http://localhost:8000"
     "http://localhost",
     "http://localhost:8080",
-    "https://staging.roi.realreturns.ai"
+    "https://staging.roi.realreturns.ai",
+    "https://roi.realreturns.ai"
+    
 ]
 
 attomd_base = "https://api.gateway.attomdata.com/propertyapi/v1.0.0"
